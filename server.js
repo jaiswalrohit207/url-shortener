@@ -1,13 +1,29 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+const { Sequelize } = require('sequelize');
 const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
+const urlModel = require('./models/Url');
 const urlRoutes = require('./routes/url');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Sequelize Database Configuration
+const sequelize = new Sequelize(
+  process.env.DB_NAME || 'url_shortener',
+  process.env.DB_USER || 'root',
+  process.env.DB_PASSWORD || 'password',
+  {
+    host: process.env.DB_HOST || 'localhost',
+    dialect: 'mysql',
+    logging: false
+  }
+);
+
+// Initialize Model
+const Url = urlModel(sequelize);
 
 // Middleware
 app.use(helmet());
@@ -15,13 +31,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/url-shortener')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
+// Sync Database
+sequelize.sync({ alter: false })
+  .then(() => console.log('Database synced successfully'))
+  .catch(err => console.log('Database sync error:', err));
 
 // Routes
-app.use('/api/url', urlRoutes);
+app.use('/api/url', urlRoutes(Url, sequelize));
 
 // Serve static files
 app.get('/', (req, res) => {
@@ -31,8 +47,7 @@ app.get('/', (req, res) => {
 // Redirect to original URL
 app.get('/:shortCode', async (req, res) => {
   try {
-    const Url = require('./models/Url');
-    const url = await Url.findOne({ shortCode: req.params.shortCode });
+    const url = await Url.findOne({ where: { shortCode: req.params.shortCode } });
     if (url) {
       url.clicks++;
       await url.save();
