@@ -162,14 +162,6 @@ Response (200):
 
 ## Usage
 
-### Web Interface
-
-1. Open `http://localhost:3000` in your browser
-2. Enter a long URL in the input field
-3. Click "Shorten URL" button
-4. Copy the generated short URL
-5. Share the short URL with others
-
 ### Using cURL
 
 ```bash
@@ -245,6 +237,107 @@ CREATE TABLE urls (
    heroku logs --tail
    ```
 
+   ### Deploy with Docker
+
+#### Prerequisites
+
+- Docker installed on your machine
+- Docker Compose (optional, for easy database setup)
+
+#### Steps
+
+1. **Build the Docker image:**
+
+```bash
+docker build -t url-shortener .
+```
+
+2. **Create a `.env` file with your configuration:**
+
+```bash
+NODE_ENV=production
+PORT=3000
+DB_HOST=db
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=url_shortener
+```
+
+3. **Run the container with Docker Compose (recommended):**
+
+Create a `docker-compose.yml` file:
+
+```yaml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root_password
+      - DB_NAME=url_shortener
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=url_shortener
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
+```
+
+Then run:
+
+```bash
+docker-compose up -d
+```
+
+4. **Or run the container with Docker only:**
+
+```bash
+# First run MySQL container
+docker run -d --name mysql-url-shortener \
+  -e MYSQL_ROOT_PASSWORD=root_password \
+  -e MYSQL_DATABASE=url_shortener \
+  -p 3306:3306 \
+  mysql:8.0
+
+# Then run your app
+docker run -d --name url-shortener \
+  -p 3000:3000 \
+  -e DB_HOST=host.docker.internal \
+  -e DB_USER=root \
+  -e DB_PASSWORD=root_password \
+  -e DB_NAME=url_shortener \
+  url-shortener
+```
+
+5. **Access the application:**
+
+The API will be available at `http://localhost:3000`
+
+#### Dockerfile Example
+
+Ensure you have a `Dockerfile` in your project root:
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+
 ### Deploy to Other Platforms
 
 - **DigitalOcean App Platform**: Connect GitHub repo, set environment variables
@@ -309,10 +402,6 @@ The API returns appropriate HTTP status codes:
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-MIT License - see LICENSE file for details
 
 ## Support
 
