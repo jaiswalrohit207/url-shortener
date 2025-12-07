@@ -1,7 +1,6 @@
 # 🔗 URL Shortener
 
-A full-stack Node.js URL shortener application with Express REST API, MySQL database, and modern web UI for creating and managing shortened URLs.
-
+A Node.js backend REST API service for URL shortening with MySQL database integration. Provides a robust, production-ready API for creating, managing, and tracking shortened URLs.
 ## Features
 
 - ✨ **Create Short URLs** - Convert long URLs into short, shareable links
@@ -10,13 +9,11 @@ A full-stack Node.js URL shortener application with Express REST API, MySQL data
 - 🎨 **Modern UI** - Beautiful, responsive web interface
 - 🚀 **REST API** - Complete RESTful API for URL operations
 - 💾 **MySQL Database** - Reliable data persistence with MySQL
-- 📱 **Responsive Design** - Works perfectly on desktop and mobile
 
 ## Tech Stack
 
 - **Backend**: Node.js + Express.js
 - **Database**: MySQL with Sequelize ORM
-- **Frontend**: HTML5, CSS3, JavaScript
 - **Runtime**: Node.js v14+
 - **HTTP Client**: Axios / Fetch API
 
@@ -24,9 +21,6 @@ A full-stack Node.js URL shortener application with Express REST API, MySQL data
 
 ```
 url-shortener/
-├── public/
-│   └── index.html           # Frontend UI
-├── models/
 │   ├── Url.js              # URL database model
 │   ├── routes/
 │   │   └── url.js          # URL API routes
