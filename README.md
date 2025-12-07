@@ -6,7 +6,6 @@ A Node.js backend REST API service for URL shortening with MySQL database integr
 - ✨ **Create Short URLs** - Convert long URLs into short, shareable links
 - 🔍 **URL Management** - View, retrieve, and delete shortened URLs
 - 📊 **Click Tracking** - Track the number of clicks on each shortened URL
-- 🎨 **Modern UI** - Beautiful, responsive web interface
 - 🚀 **REST API** - Complete RESTful API for URL operations
 - 💾 **MySQL Database** - Reliable data persistence with MySQL
 
