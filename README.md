@@ -338,13 +338,6 @@ CMD ["npm", "start"]
 ```
 
 
-### Deploy to Other Platforms
-
-- **DigitalOcean App Platform**: Connect GitHub repo, set environment variables
-- **Railway**: Similar to Heroku, connect GitHub and deploy
-- **Render**: Support for Node.js apps with PostgreSQL/MySQL
-- **AWS**: Use EC2, RDS for database, and configure with application load balancer
-
 ## Environment Variables
 
 | Variable | Description | Default |
@@ -413,9 +406,7 @@ For issues and questions:
 ## Changelog
 
 ### v2.0.0 (Current)
-- ✅ Migrated from MongoDB to MySQL
 - ✅ Implemented Sequelize ORM
-- ✅ Added responsive web UI
 - ✅ Improved API endpoints
 - ✅ Enhanced error handling
 - ✅ Added deployment documentation
